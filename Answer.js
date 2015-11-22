@@ -14,7 +14,7 @@ var $ = function (selector) {
 function getElements(selector) {
   var result = [];
   if(selector.charAt(0) === '#') {
-    result = document.getElementById(selector.substring(1));
+    result = [document.getElementById(selector.substring(1))];
   } else if (selector.charAt(0) === '.') {
     result = document.getElementsByClassName(selector.substring(1));
   } else {
