@@ -4,10 +4,8 @@ var $ = function (selector) {
   var nodes = getElements(selectors.shift());
 
   if(selectors.length === 1) {
-    //console.log(selector);
     return nodes;
   } else {
-    //console.log('selectors length is longer than one: ' + selector);
     excludeNoneMatching(nodes, selectors)
   }
 
@@ -24,8 +22,13 @@ var $ = function (selector) {
     return tempArray;
   }
 
-  function hasClass(el, cls) {
-    return el.className && new RegExp("\\s|^" + cls + "\\s|$").test(el.className);
+  function matchesSelectors(el, selectors) {
+    var matches= true;
+    for(var i = 0; i < selectors.length; i++) {
+      if(!matches || !matchesSelector(el, selectors[i])) {
+        matches = false;
+      }
+    }
   }
 
   function matchesSelector(el, sel) {
@@ -38,13 +41,8 @@ var $ = function (selector) {
     }
   }
 
-  function matchesSelectors(el, selectors) {
-    var matches= true;
-    for(var i = 0; i < selectors.length; i++) {
-      if(!matches || !matchesSelector(el, selectors[i])) {
-        matches = false;
-      }
-    }
+  function hasClass(el, cls) {
+    return el.className && new RegExp("\\s|^" + cls + "\\s|$").test(el.className);
   }
 
   function getElements(selector) {
