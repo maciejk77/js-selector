@@ -1,12 +1,12 @@
 var $ = function (selector) {
   var elements = [];
   var selectors = selector.split(/(?=\.)|(?=#)/);
-  var nodes = getElements(selectors.shift());
+  var nodes = getElements(selectors[0]);
 
   if(selectors.length === 1) {
     return nodes;
   } else {
-    excludeNoneMatching(nodes, selectors)
+    excludeNonMatching(nodes, selectors);
   }
 
   return elements;
@@ -14,18 +14,18 @@ var $ = function (selector) {
   function excludeNonMatching(nodes, selectors) {
     var tempArray = [];
     for(var i = 0; i < nodes.length; i++) {
-      var el = nodes[i];
-      if(matchesSelectors(el, selectors)) {
-        tempArray.push(el);
+      var node = nodes[i];
+      if(matchesSelectors(node, selectors)) {
+        tempArray.push(node);
       }
     }
     return tempArray;
   }
 
-  function matchesSelectors(el, selectors) {
+  function matchesSelectors(node, selectors) {
     var matches= true;
     for(var i = 0; i < selectors.length; i++) {
-      if(!matches || !matchesSelector(el, selectors[i])) {
+      if(!matches || !matchesSelector(node, selectors[i])) {
         matches = false;
       }
     }
@@ -35,7 +35,7 @@ var $ = function (selector) {
     var firstChar = sel.charAt(0);
     switch(firstChar) {
       case '#':
-        return sel.substring(1) === el.attr('id');
+        return sel.substring(1) === el.id;
       case '.':
         return hasClass(el, sel.substring(1));
     }
