@@ -20,7 +20,8 @@ var $ = function (selector) {
     }
   return result;
   }
-  //return elements;
+
+  return elements;
 
   function getElements(selector) {
     var result = [];
