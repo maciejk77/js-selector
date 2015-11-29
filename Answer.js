@@ -2,48 +2,25 @@ var $ = function (selector) {
   var elements = [];
   var selectors = selector.split(/(?=\.)|(?=#)/);
   var nodes = getElements(selectors[0]);
+  elements = nodes;
 
-  if(selectors.length === 1) {
+  if (selectors.length === 1) {
     return nodes;
   } else {
-    excludeNonMatching(nodes, selectors);
-  }
-
-  return elements;
-
-  function excludeNonMatching(nodes, selectors) {
-    var tempArray = [];
-    for(var i = 0; i < nodes.length; i++) {
-      var node = nodes[i];
-      if(matchesSelectors(node, selectors)) {
-        tempArray.push(node);
+    var matches = [];
+    
+    for (var s = 1; s < selectors.length; s++) {
+      matches.push(getElements(selectors[s]));
+      
+      for (var e = 0; e < elements.length; e++) {
+        if (matches.indexOf(elements[e]) === -1) {
+          var result = Array.prototype.slice.call(elements, e);
+        }
       }
     }
-    return tempArray;
+  return result;
   }
-
-  function matchesSelectors(node, selectors) {
-    var matches= true;
-    for(var i = 0; i < selectors.length; i++) {
-      if(!matches || !matchesSelector(node, selectors[i])) {
-        matches = false;
-      }
-    }
-  }
-
-  function matchesSelector(el, sel) {
-    var firstChar = sel.charAt(0);
-    switch(firstChar) {
-      case '#':
-        return sel.substring(1) === el.id;
-      case '.':
-        return hasClass(el, sel.substring(1));
-    }
-  }
-
-  function hasClass(el, cls) {
-    return el.className && new RegExp("\\s|^" + cls + "\\s|$").test(el.className);
-  }
+  //return elements;
 
   function getElements(selector) {
     var result = [];
